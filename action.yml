@@ -28,6 +28,6 @@ runs:
       source: s3://${{ inputs.aws_bucket }}/${{ github.event.repository.name }}/${{ inputs.folder }}/${{ steps.package-version.outputs.current-version }}.zip
       dest: ./
   - name: Extract some files
-    run: 7z x ${{ steps.package-version.outputs.current-version }}.zip
+    run: 7z x ${{ steps.package-version.outputs.current-version }}.zip -aoa
     shell: bash
 
