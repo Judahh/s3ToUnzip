@@ -1,0 +1,33 @@
+name: 'ZIP TO S3'
+description: 'Zip a NODE/NEXT project and publish a zip file to S3'
+inputs:
+  folder:  # folder name
+    description: 'Folder Name'
+    required: true
+    default: 'production'
+  aws_key_id:
+    description: 'AWS Key ID'
+    required: true
+  aws_key:
+    description: 'AWS Key'
+    required: true
+  aws_bucket:
+    description: 'AWS Bucket'
+    required: true
+runs:
+  using: "composite"
+  steps:
+  - name: GET VERSION
+    id: package-version
+    uses: martinbeentjes/npm-get-version-action@master
+  - name: Copy From S3
+    uses: prewk/s3-cp-action@v2
+    with:
+      aws_access_key_id: ${{ inputs.aws_key_id }}
+      aws_secret_access_key: ${{ inputs.aws_key }}
+      source: s3://${{ inputs.aws_bucket }}/${{ github.event.repository.name }}/${{ inputs.folder }}/${{ steps.package-version.outputs.current-version }}.zip
+      dest: ./
+  - name: Extract some files
+    run: 7z x ${{ steps.package-version.outputs.current-version }}.zip
+    shell: bash
+
