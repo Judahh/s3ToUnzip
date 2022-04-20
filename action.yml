@@ -32,7 +32,7 @@ runs:
       token: ${{ github.token }}
   - name: GET VERSION
     id: package-version
-    uses: martinbeentjes/npm-get-version-action@master
+    uses: martinbeentjes/npm-get-version-action@main
   - name: Copy From S3
     uses: prewk/s3-cp-action@v2
     with:
